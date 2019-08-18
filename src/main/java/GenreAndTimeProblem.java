@@ -31,8 +31,9 @@ public class GenreAndTimeProblem {
         JavaPairRDD<String, Long> watchCountAndUser = stringStartedStream
                 .mapToPair(input -> new Tuple2<>(generateKeyWithUserId(input), 1L))
                 .reduceByKey((a, b) -> a + b)
-                .mapToPair(row -> new Tuple2<>(removeUserIdFromKey(row._1),row._2))
+                .mapToPair(row -> new Tuple2<>(removeUserIdFromKey(row._1), 1L))
                 .reduceByKey((a, b) -> a + b);
+
 
         JavaRDD<GenrePopularity> genrePopularityJavaRDD = watchCountAndUser.map(row -> new GenrePopularity(row._1.split(","),row._2)).
                 sortBy(genrePopularity -> genrePopularity.getUniqueCount(), false, 1);
