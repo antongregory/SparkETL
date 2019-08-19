@@ -2,7 +2,7 @@
 ETL project using Apache spark - Java
 
 The solution to the problem statements is spread/divided among three classes with its own main method.
-The following gives an overview of approach handled for the three problem statements.
+The following gives an overview of the approach handled for solving the three problem statements.
 
 
 ### 1.	Sales and rentals broadcast rights:
@@ -14,12 +14,16 @@ The following gives an overview of approach handled for the three problem statem
     
     - In the SalesRightProblem, the two input files whatson.csv and started_streams.csv files are parsed and
       read in to different JavaRDD objects
-    - As the solution needs a join based on house and country code, a JavaRddPair is created with house_number + country_code 
-      for both the input files separately.
-    - Then 'join' operation is applied on the both JavaRddPair
-    - As the last step, based on the format needed the data in JavaRddPair is extracted into a new map.
-  
-
+    - Key value pair is created for the data in whatson.csv. However, as the recent date is required 
+      reduceByKey is performed on the key value pair which is stored in whatsOnPair.
+    - As the solution needs a join based on house and country code, a JavaRddPair is created with 
+      house_number + country_code for both the input files separately. The country code is obtained from 
+      the broadcast_region column of the WhatsOn file as there is no direct column of country code,
+    - Then 'join' operation is applied on the both JavaRddPair -streamDataPair and whatsOnPair
+    - As the last step, based on the output format needed the data in JavaRddPair is extracted into a new map
+      and displayed as output.
+    
+ 
 ### 2.	Product and user count:
       Problem: We need to know how many watches a product is getting and how many unique users 
       are watching the content, in what device, country and what product_type 
@@ -29,16 +33,16 @@ The following gives an overview of approach handled for the three problem statem
     - In the ProductUserCount::main(), the input files started_streams.csv files is
       parsed into startedStreamRDD.
     - A javaPairRdd is created from startedStreamRDD in a way that a string  key is used
-      in one side and a value of 1 is used.   JavaPairRDD<String, Long>
-    - The string key for the above JavaPair created is with date,device, country,title, type
-    - This is to give facilitate the calculation of count per product using mapReduce
+      in one side and a value of 1 is used on the other side.   JavaPairRDD<String, Long>
+    - The string key for the above JavaPair created is with date,device, country,title, and type
+    - This is to facilitate the calculation of count per product using mapReduce (productCount)
     - Similarly, another JavaPairRdd is created but with a key including the userId as well.
     - A mapReduce is performed on this pair to find how many users watch a title.
-    - From which, calculation of uniqueUsersPerProduct is done
+    - countApproxDistinctByKey is applied on the above pair to get unique users watching a product 
+      stored in uniqueUsersPerProduct.
     - As the last step, we perform a join on uniqueUsersPerProduct and productCount to
       get the summary required.
       
-  
 
 ### 3.	Genre and time of day: 
 
