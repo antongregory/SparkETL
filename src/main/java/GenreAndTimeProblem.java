@@ -40,6 +40,8 @@ public class GenreAndTimeProblem {
 
         genrePopularityJavaRDD.foreach(d->System.out.println(d));
 
+        sc.stop();
+
     }
 
 

@@ -39,7 +39,7 @@ public class ProductUserCount{
 
         uniqueUserAndProductCountSummary.foreach(d -> System.out.println(d));
 
-
+        sc.stop();
 
     }
 

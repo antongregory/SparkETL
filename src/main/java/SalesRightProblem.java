@@ -62,6 +62,8 @@ public class SalesRightProblem {
         JavaRDD<BroadCastRightResult> broadCastRightResultJavaRDD = joinedData.map(tupleV -> new BroadCastRightResult(tupleV._2._1,tupleV._2._2));
         broadCastRightResultJavaRDD.foreach(d->System.out.println(d));
 
+        sc.stop();
+
     }
 
 
