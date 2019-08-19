@@ -10,5 +10,4 @@
 .DS_Store
 /build
 .idea/*
-target/*
-Testdata/*
+target/

@@ -1,5 +1,3 @@
-
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -51,14 +49,14 @@ public class SalesRightProblem {
                 .mapToPair(row -> {
                             return new Tuple2<>( new Tuple2<>(row[1],getCountryCode(row[4])),new WhatsOn(row));
                         }
-                );;
-
-
+                ).reduceByKey(( whatsOnValue1, whatsOnValue2) -> {
+                    WhatsOn whatsOnValueWithRecentDate = (whatsOnValue1.compareTo(whatsOnValue2) > 1) ? whatsOnValue1 : whatsOnValue2;
+                    return whatsOnValueWithRecentDate;
+                } );
 
         // Join the data from two rdd pairs
         JavaPairRDD <Tuple2<String,String>,Tuple2<StartedStream,WhatsOn>> joinedData
-                = streamDataPair.join(whatsOnPair).distinct();
-
+                = streamDataPair.join(whatsOnPair);
 
         // compose the result from the joined data
         JavaRDD<BroadCastRightResult> broadCastRightResultJavaRDD = joinedData.map(tupleV -> new BroadCastRightResult(tupleV._2._1,tupleV._2._2));

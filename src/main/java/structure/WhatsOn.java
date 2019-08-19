@@ -1,10 +1,13 @@
 package structure;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class WhatsOn implements Serializable {
+public class WhatsOn implements Serializable, Comparable<WhatsOn> {
 
-    private String dt;
+    private Date dt;
 
     private String houseNumber;
 
@@ -22,8 +25,16 @@ public class WhatsOn implements Serializable {
 
     private String broadcastEndDate;
 
+    SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+
     public WhatsOn(String dt, String houseNumber, String title, String productCategory, String broadcastRegion, String broadcastType, String broadcastStartDate, String broadcastEndDate) {
-        this.dt = dt;
+        try{
+            this.dt = sDateFormat.parse(dt);
+        }catch (ParseException e){
+            System.err.println("Parse exception while parsing date "+dt);
+            this.dt = new Date();
+        }
         this.houseNumber = houseNumber;
         this.title = title;
         this.productCategory = productCategory;
@@ -32,7 +43,6 @@ public class WhatsOn implements Serializable {
         this.broadcastStartDate = broadcastStartDate;
         this.broadcastEndDate = broadcastEndDate;
     }
-
 
 
     public WhatsOn (String[] input){
@@ -40,74 +50,33 @@ public class WhatsOn implements Serializable {
     }
 
 
-    public String getDt() {
+    public Date getDt() {
         return dt;
     }
 
-    public void setDt(String dt) {
-        this.dt = dt;
+    public String getDtInStringFormat() {
+        return sDateFormat.format(dt);
     }
 
     public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
-    }
-
-    public String getBroadcastRegion() {
-        return broadcastRegion;
-    }
-
-    public void setBroadcastRegion(String broadcastRegion) {
-        this.broadcastRegion = broadcastRegion;
-    }
-
-    public String getBroadcastType() {
-        return broadcastType;
-    }
-
-    public void setBroadcastType(String broadcastType) {
-        this.broadcastType = broadcastType;
-    }
 
     public String getBroadcastStartDate() {
         return broadcastStartDate;
     }
 
-    public void setBroadcastStartDate(String broadcastStartDate) {
-        this.broadcastStartDate = broadcastStartDate;
-    }
 
     public String getBroadcastEndDate() {
         return broadcastEndDate;
     }
 
-    public void setBroadcastEndDate(String broadcastEndDate) {
-        this.broadcastEndDate = broadcastEndDate;
-    }
 
     @Override
     public String toString() {
         return "WhatsOn{" +
-                "dt='" + dt + '\'' +
+                "dt='" + getDtInStringFormat() + '\'' +
                 ", houseNumber='" + houseNumber + '\'' +
                 ", title='" + title + '\'' +
                 ", productCategory='" + productCategory + '\'' +
@@ -118,5 +87,8 @@ public class WhatsOn implements Serializable {
                 '}';
     }
 
-
+    @Override
+    public int compareTo(WhatsOn o) {
+        return getDt().compareTo(o.getDt());
+    }
 }

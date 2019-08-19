@@ -13,7 +13,7 @@ public class GenreAndTimeProblem {
     public static void main(String[] args) {
 
 
-        SparkConf conf = new SparkConf().setMaster("local").setAppName("Problem_3");
+        SparkConf conf = new SparkConf().setMaster("local").setAppName("PopularGenre");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         JavaRDD<String> textFile = sc.textFile("testdata/started_streams.csv");

@@ -34,7 +34,7 @@ public class ProductUserCount{
 
         // 4. join the results from 1 and 3
         JavaRDD<String> uniqueUserAndProductCountSummary = productCount.join(uniqueUsersPerProduct).map(
-                joined -> joined._1 +";"+joined._2._1()+";"+joined._2._2() );
+                joined -> joined._1 +","+joined._2._1()+","+joined._2._2() );
 
 
         uniqueUserAndProductCountSummary.foreach(d -> System.out.println(d));
