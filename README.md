@@ -1,6 +1,12 @@
 # SparkEtl
 ETL project using Apache spark - Java
 
+Spark version: 2.4.3 Java version: 1.8
+
+To run the solution, import the project as a Maven project and import the maven dependencies. Make sure to have Java -8 in the system already configured.
+
+Input files must be placed within a folder called testdata in the project root directory:(whatson.csv and started_streams.csv)
+
 The solution to the problem statements is spread/divided among three classes with its own main method.
 The following gives an overview of approach handled for the three problem statements.
 
